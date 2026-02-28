@@ -16,9 +16,9 @@ export function getPlanFromPriceId(priceId: string): Plan | null {
 }
 
 export const PLAN_LIMITS = {
-  FREE: { repos: 1, changelogsPerMonth: 5, subscribers: 0 },
-  STARTER: { repos: 3, changelogsPerMonth: Infinity, subscribers: 100 },
-  PRO: { repos: Infinity, changelogsPerMonth: Infinity, subscribers: Infinity },
+  FREE: { repos: 1, changelogsPerMonth: 10, subscribers: 0 },
+  STARTER: { repos: 3, changelogsPerMonth: 50, subscribers: 100 },
+  PRO: { repos: 10, changelogsPerMonth: 200, subscribers: 1000 },
 } as const
 
 export async function getOrCreateCustomer(email: string, userId: string): Promise<string> {

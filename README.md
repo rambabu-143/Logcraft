@@ -29,9 +29,9 @@ AI-powered changelog generator. Connect a GitHub repo → push to main → get a
 
 | Feature | Free | Starter ($9/mo) | Pro ($19/mo) |
 |---|---|---|---|
-| Repositories | 1 | 3 | Unlimited |
+| Repositories | 1 | 3 | 10 |
 | Changelogs/month | 10 | 50 | 200 |
-| Email subscribers | — | 100 | Unlimited |
+| Email subscribers | — | 100 | 1,000 |
 | Slack notifications | — | ✓ | ✓ |
 | Custom domain | — | — | ✓ |
 | Remove branding | — | — | ✓ |

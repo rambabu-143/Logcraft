@@ -298,9 +298,9 @@ export default async function HomePage() {
                 <div className="text-sm text-gray-500 mb-8">billed monthly</div>
                 <ul className="space-y-3 text-sm text-gray-400 mb-8">
                   {[
-                    'Unlimited repositories',
+                    '10 repositories',
                     '200 changelogs / month',
-                    'Unlimited subscribers',
+                    '1,000 subscribers',
                     'Custom domain (CNAME)',
                     'Remove Changelogfy branding',
                     'Everything in Starter',
