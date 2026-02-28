@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "changelog-generator": {
+      "source": "dedalus-erp-pas/foundation-skills",
+      "sourceType": "github",
+      "computedHash": "1840e3904cec00eb16fd3e17d139580d0b9103ea4bb942c59fa44700f496a863"
+    }
+  }
+}

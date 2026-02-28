@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+}
+
+@layer components {
+  .prose-changelog h2 {
+    @apply text-base font-semibold text-gray-900 mt-5 mb-2 flex items-center gap-2;
+  }
+  .prose-changelog ul {
+    @apply space-y-1 pl-4;
+  }
+  .prose-changelog li {
+    @apply text-gray-600 text-sm leading-relaxed;
+  }
+  .prose-changelog li::marker {
+    @apply text-gray-400;
+  }
+}
+
+/* Subtle grid background for hero */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(0,0,0,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
