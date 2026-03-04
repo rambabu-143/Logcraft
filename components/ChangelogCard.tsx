@@ -32,23 +32,19 @@ export function ChangelogCard({ changelog, projectSlug }: Props) {
   }
 
   const date = new Date(changelog.publishedAt ?? changelog.createdAt)
-  const formatted = date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 transition-colors">
+    <div className="bg-white dark:bg-white/[0.04] rounded-xl border border-gray-200 dark:border-white/[0.08] overflow-hidden hover:border-gray-300 dark:hover:border-white/[0.14] transition-colors">
       {/* Header */}
-      <div className="px-5 py-4 flex items-center justify-between border-b border-gray-50">
+      <div className="px-5 py-4 flex items-center justify-between border-b border-gray-50 dark:border-white/[0.05]">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-bold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg font-mono">
+          <span className="text-sm font-bold text-gray-900 dark:text-white bg-gray-100 dark:bg-white/[0.08] px-3 py-1 rounded-lg font-mono">
             {changelog.version}
           </span>
-          <span className="text-xs text-gray-400">{formatted}</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">{formatted}</span>
           {!changelog.isPublished && (
-            <span className="text-xs bg-amber-50 text-amber-600 border border-amber-100 px-2 py-0.5 rounded-full font-medium">
+            <span className="text-xs bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-500/20 px-2 py-0.5 rounded-full font-medium">
               Draft
             </span>
           )}
@@ -57,7 +53,7 @@ export function ChangelogCard({ changelog, projectSlug }: Props) {
           <Link
             href={`/p/${projectSlug}/${changelog.id}`}
             target="_blank"
-            className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-indigo-600 transition-colors font-medium"
+            className="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium"
           >
             View
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +63,7 @@ export function ChangelogCard({ changelog, projectSlug }: Props) {
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="text-xs text-gray-400 hover:text-red-500 transition-colors disabled:opacity-50 font-medium"
+            className="text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors disabled:opacity-50 font-medium"
           >
             {deleting ? '…' : 'Delete'}
           </button>
@@ -76,18 +72,19 @@ export function ChangelogCard({ changelog, projectSlug }: Props) {
 
       {/* Content */}
       <div className={`px-5 py-4 overflow-hidden transition-all duration-200 ${expanded ? '' : 'max-h-48'}`}>
-        <div className="prose prose-sm prose-gray max-w-none">
+        <div className="prose prose-sm max-w-none dark:prose-invert">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               h2: ({ children }) => (
-                <h2 className="text-xs font-bold text-gray-700 mt-4 mb-2 first:mt-0 uppercase tracking-wide">{children}</h2>
+                <h2 className="text-xs font-bold text-gray-700 dark:text-gray-300 mt-4 mb-2 first:mt-0 uppercase tracking-wide">{children}</h2>
               ),
               ul: ({ children }) => <ul className="space-y-1 pl-3 mb-3">{children}</ul>,
               li: ({ children }) => (
-                <li className="text-xs text-gray-500 leading-relaxed list-disc">{children}</li>
+                <li className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed list-disc">{children}</li>
               ),
-              p: ({ children }) => <p className="text-xs text-gray-500 leading-relaxed">{children}</p>,
+              p: ({ children }) => <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{children}</p>,
+              strong: ({ children }) => <strong className="font-semibold text-gray-700 dark:text-gray-200">{children}</strong>,
             }}
           >
             {changelog.generatedContent}
@@ -98,7 +95,7 @@ export function ChangelogCard({ changelog, projectSlug }: Props) {
       {/* Expand toggle */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full px-5 py-2.5 text-xs text-gray-400 hover:text-gray-600 transition-colors border-t border-gray-50 bg-gray-50/50 hover:bg-gray-50 flex items-center justify-center gap-1"
+        className="w-full px-5 py-2.5 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors border-t border-gray-50 dark:border-white/[0.05] bg-gray-50/50 dark:bg-white/[0.02] hover:bg-gray-50 dark:hover:bg-white/[0.04] flex items-center justify-center gap-1"
       >
         {expanded ? 'Show less ↑' : 'Show more ↓'}
       </button>

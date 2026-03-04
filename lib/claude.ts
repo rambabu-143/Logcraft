@@ -1,7 +1,8 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
+const client = new OpenAI({
+  apiKey: process.env.ZHIPUAI_API_KEY!,
+  baseURL: 'https://open.bigmodel.cn/api/paas/v4/',
 })
 
 const SYSTEM_PROMPT = `You are a product writer who transforms technical git commits into polished, user-friendly changelogs that customers actually understand and appreciate.
@@ -40,11 +41,6 @@ export async function generateChangelog(
   projectName: string,
   version: string,
 ): Promise<string> {
-  // TODO: remove mock when Anthropic credits are available
-  if (process.env.MOCK_CLAUDE === 'true') {
-    return `## ✨ New Features\n\n- **${projectName} Update**: New changes have been shipped to improve the experience.\n\n## 🔧 Improvements\n\n${commits.slice(0, 3).map((c) => `- ${c}`).join('\n')}`
-  }
-
   const commitList = commits.map((c) => `- ${c}`).join('\n')
 
   const userMessage = `Generate a changelog from these commits:
@@ -53,17 +49,20 @@ ${commitList}
 Project: ${projectName}
 Version: ${version}`
 
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+  const response = await client.chat.completions.create({
+    model: 'glm-4.7-flash',
     max_tokens: 2048,
-    messages: [{ role: 'user', content: userMessage }],
-    system: SYSTEM_PROMPT,
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: userMessage },
+    ],
   })
 
-  const textBlock = message.content.find((b) => b.type === 'text')
-  if (!textBlock || textBlock.type !== 'text') {
-    throw new Error('Claude returned no text content')
+  const text = response.choices[0]?.message?.content
+  if (!text) {
+    throw new Error('AI returned no text content')
   }
 
-  return textBlock.text.trim()
+  // DeepSeek R1 includes <think>...</think> reasoning blocks — strip them
+  return text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim()
 }

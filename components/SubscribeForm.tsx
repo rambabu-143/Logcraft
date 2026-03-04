@@ -41,7 +41,7 @@ export function SubscribeForm({ projectSlug }: Props) {
 
   if (status === 'success') {
     return (
-      <div className="flex items-center gap-2.5 text-sm text-green-700 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
+      <div className="flex items-center gap-2.5 text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20 rounded-xl px-4 py-3">
         <span className="text-base">✅</span>
         <span>You&apos;re subscribed! We&apos;ll email you on each new release.</span>
       </div>
@@ -57,7 +57,7 @@ export function SubscribeForm({ projectSlug }: Props) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400 bg-white"
+          className="flex-1 text-sm border border-gray-200 dark:border-white/[0.1] rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-600 bg-white dark:bg-white/[0.05] text-gray-900 dark:text-white"
         />
         <button
           type="submit"

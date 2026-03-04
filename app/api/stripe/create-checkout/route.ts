@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { stripe, getOrCreateCustomer, createCheckoutSession, createBillingPortalSession } from '@/lib/stripe'
+import { stripe, getOrCreateCustomer, createCheckoutSession, createBillingPortalSession, getPlanFromPriceId } from '@/lib/stripe'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { email: true, stripeCustomerId: true },
+    select: { email: true, stripeCustomerId: true, stripeSubscriptionId: true },
   })
   if (!user?.email) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 })
@@ -54,6 +54,31 @@ export async function POST(req: NextRequest) {
   }
 
   const baseUrl = process.env.NEXTAUTH_URL!
+
+  // If user already has an active subscription, update the price on it (upgrade/downgrade)
+  if (user.stripeSubscriptionId) {
+    try {
+      const existing = await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
+      if (existing.status === 'active' || existing.status === 'trialing') {
+        const itemId = existing.items.data[0]?.id
+        await stripe.subscriptions.update(user.stripeSubscriptionId, {
+          items: [{ id: itemId, price: resolvedPriceId }],
+          proration_behavior: 'create_prorations',
+        })
+        const newPlan = getPlanFromPriceId(resolvedPriceId)
+        if (newPlan) {
+          await prisma.user.update({
+            where: { id: session.user.id },
+            data: { plan: newPlan },
+          })
+        }
+        return NextResponse.json({ url: `${baseUrl}/billing/success` })
+      }
+    } catch {
+      // Subscription not found or invalid — fall through to new checkout
+    }
+  }
+
   const checkoutUrl = await createCheckoutSession(
     customerId,
     resolvedPriceId,

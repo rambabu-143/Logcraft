@@ -179,7 +179,7 @@ export function ProjectSetup({ plan }: Props) {
           </label>
           <div className="flex items-center gap-0 border border-gray-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-transparent">
             <span className="text-sm text-gray-400 bg-gray-50 px-3 py-2.5 border-r border-gray-200 whitespace-nowrap">
-              changelogfy.com/p/
+              logcraft.app/p/
             </span>
             <input
               type="text"

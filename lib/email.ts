@@ -47,7 +47,7 @@ function buildEmailHtml(data: ChangelogEmailData): string {
     <p style="margin-top:24px;font-size:12px;color:#9ca3af;">
       You're receiving this because you subscribed to ${data.projectName} changelogs.
       <br/>
-      Powered by <a href="${process.env.NEXTAUTH_URL}" style="color:#4f46e5;">Changelogfy</a>
+      Powered by <strong>Logcraft</strong>
     </p>
   </div>
 </body>
