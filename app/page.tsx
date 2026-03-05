@@ -74,7 +74,7 @@ export default async function HomePage() {
             </h1>
             <p className="mt-6 text-lg md:text-xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
               Connect your GitHub repo. Push to main. Get a beautiful, AI-generated changelog
-              published instantly — no manual writing, no missed commits.
+              published instantly  no manual writing, no missed commits.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

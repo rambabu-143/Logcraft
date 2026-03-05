@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plan } from '@prisma/client'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
+
 interface Repo {
   id: number
   fullName: string
@@ -32,7 +34,7 @@ export function ProjectSetup({ plan }: Props) {
   const [submitError, setSubmitError] = useState('')
 
   useEffect(() => {
-    fetch('/api/github/repos')
+    fetch(`${API_URL}/api/github/repos`)
       .then((r) => r.json())
       .then((data) => {
         if (data.error) {
@@ -59,7 +61,7 @@ export function ProjectSetup({ plan }: Props) {
     setSubmitting(true)
     setSubmitError('')
 
-    const res = await fetch('/api/projects', {
+    const res = await fetch(`${API_URL}/api/projects`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -116,11 +118,10 @@ export function ProjectSetup({ plan }: Props) {
                   key={repo.id}
                   onClick={() => !repo.alreadyConnected && handleSelectRepo(repo)}
                   disabled={repo.alreadyConnected}
-                  className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${
-                    repo.alreadyConnected
+                  className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${repo.alreadyConnected
                       ? 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed'
                       : 'border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
