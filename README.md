@@ -1,6 +1,6 @@
-# Changelogfy 🚀
+# LogCraft 🚀
 
-Changelogfy is an automated, AI-powered changelog generator designed to streamline your release process by turning GitHub commits into polished release notes.
+LogCraft is an automated, AI-powered changelog generator designed to streamline your release process by turning GitHub commits into polished release notes.
 
 ## 🛠️ Tech Stack
 
