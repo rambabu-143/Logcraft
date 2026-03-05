@@ -18,7 +18,7 @@ Changelogfy is an automated, AI-powered changelog generator designed to streamli
 ### Infrastructure & Services
 - **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/)
-- **AI Engine**: [ZhipuAI](https://open.bigmodel.cn/) / [Claude API](https://www.anthropic.com/api)
+- **AI Engine**: [OpenAI GPT-4o](https://openai.com/) / [Claude API](https://www.anthropic.com/api)
 - **Payments**: [Stripe](https://stripe.com/)
 - **Email**: [Resend](https://resend.com/)
 

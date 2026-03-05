@@ -1,10 +1,8 @@
-import OpenAI from 'openai'
+import os
+from openai import OpenAI
+from typing import List
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-})
-
-const SYSTEM_PROMPT = `You are a product writer who transforms technical git commits into polished, user-friendly changelogs that customers actually understand and appreciate.
+SYSTEM_PROMPT = """You are a product writer who transforms technical git commits into polished, user-friendly changelogs that customers actually understand and appreciate.
 
 ## Categories (only include those with items)
 - ✨ New Features — new capabilities or functionality
@@ -33,35 +31,25 @@ const SYSTEM_PROMPT = `You are a product writer who transforms technical git com
 - "Implemented debounce on search input" → "Search responds instantly as you type"
 - "Fix memory leak in sync worker" → "Improved app stability during long sessions"
 
-Return ONLY the markdown changelog, no preamble, no explanation.`
+Return ONLY the markdown changelog, no preamble, no explanation."""
 
-export async function generateChangelog(
-  commits: string[],
-  projectName: string,
-  version: string,
-): Promise<string> {
-  const commitList = commits.map((c) => `- ${c}`).join('\n')
+def generate_changelog(commits: List[str], project_name: str, version: str) -> str:
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    
+    commit_list = "\n".join([f"- {c}" for c in commits])
+    user_message = f"""Generate a changelog from these commits:
+{commit_list}
 
-  const userMessage = `Generate a changelog from these commits:
-${commitList}
+Project: {project_name}
+Version: {version}"""
 
-Project: ${projectName}
-Version: ${version}`
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_message}
+        ],
+        max_tokens=2048
+    )
 
-  const response = await client.chat.completions.create({
-    model: 'gpt-4o',
-    max_tokens: 2048,
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: userMessage },
-    ],
-  })
-
-  const text = response.choices[0]?.message?.content
-  if (!text) {
-    throw new Error('AI returned no text content')
-  }
-
-  // DeepSeek R1 includes <think>...</think> reasoning blocks — strip them
-  return text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim()
-}
+    return response.choices[0].message.content.strip()
